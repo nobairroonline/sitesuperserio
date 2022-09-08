@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Teste de abertura de outra pagina</title>
+</head>
+<body>
+
+<script>  
+  // O que este script esta fazendo é:
+  //  receber o usuário "https://meutestedeblog01.blogspot.com/2022/09/pagina-redireciona.html"
+  //  capturar o valor do parametro "q"
+  //  redirecionar para a URL "https://www.google.com/search?q=" anexando o valor parâmetro "q" já capturado em "https://meutestedeblog01.blogspot.com/2022/09/pagina-redireciona.html?q=casa".
+  const urlParams = new URLSearchParams(window.location.search);
+  const q = urlParams.get('q');
+  //window.location.href = "https://www.google.com/search?q="+q;
+  //window.open("http://pt.stackoverflow.com");
+  //window.location.assign("https://www.google.com/search?q="+q)
+  //setTimeout(function(){location.href="https://meutestedeblog01.blogspot.com/2022/09/outra-pagina.html", 5000} );
+  setTimeout(function(){window.open("http://pt.stackoverflow.com"), 5000} );
+</script>
+</body>
+</html>
