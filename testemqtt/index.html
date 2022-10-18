@@ -6,12 +6,12 @@
   <style>
 
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.1/mqttws31.min.js"></script>
+  <script src="mqttws31.min.js"></script>
 
   <script>
 
     var mqtt;
-    var reconnectTimeout = 2000;
+    var reconnectTimeout = 5000;
     var host = "broker.mqttdashboard.com";
     var port = 8000;
 
@@ -20,10 +20,10 @@
       console.log("onConnect");
       mqtt.subscribe("/casa/cozinha");
 
-      var message  = new Paho.MQTT.Message("Hello");
-      message.destinationName = "/casa/cozinha";
-      message.qos = 0
-      mqtt.send(message); 
+      //var message  = new Paho.MQTT.Message("Hello");
+      //message.destinationName = "/casa/cozinha";
+      //message.qos = 0
+      //mqtt.send(message); 
     }
     function onError(message) {
 
