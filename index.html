@@ -1,163 +1,140 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--
-    <link rel="stylesheet" href="getmdl/material.min.css">
-    <script src="getmdl/material.min.js"></script>
-    -->
-    <link rel="manifest" href="/manifest.webmanifest"/>
-    <title>No Bairro Online</title>
-	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-    <style>
-        body {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-	#map{
-		width: 100%;
-		height: 100vh;
-	}
-    </style>
-	<script>
-	// This is the "Offline page" service worker
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  
+  <meta name="description" content="Encontre os melhores negócios e serviços no seu bairro ou cidade! Entre no grupo do WhatsApp e ntribua com outros membros participativos">
+  <meta name="robots" content="index, follow">
+  <title>No Bairro Online | Conectando Negócios e Comunidade</title>
+  
+  <!-- Open Graph meta tags para compartilhamento social -->
+  <meta property="og:title" content="No Bairro Online | Conectando Negócios e Comunidade">
+  <meta property="og:description" content="Encontre os melhores negócios e serviços no seu bairro ou cidade! Entre no grupo do atsApp e contribua com outros membros participativos">
+  <meta property="og:image" content="https://www.nobairroonline.com.br/imagem-grupo-whatsapp.jpg">
+  <meta property="og:url" content="https://www.nobairroonline.com.br">
+  
+  <!-- Link para o Favicon 
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  -->
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/5.1.2/workbox-sw.js');
+  <link rel="icon" type="image/png" sizes="16x16"  href="favicons/favicon-16x16.png">
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#ffffff">
+  <style>
+    .wrap {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-const CACHE = "pwabuilder-page";
-
-// TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";
-const offlineFallbackPage = "ToDo-replace-this-name.html";
-
-self.addEventListener("message", (event) => {
-  if (event.data && event.data.type === "SKIP_WAITING") {
-    self.skipWaiting();
-  }
-});
-
-self.addEventListener('install', async (event) => {
-  event.waitUntil(
-    caches.open(CACHE)
-      .then((cache) => cache.add(offlineFallbackPage))
-  );
-});
-
-if (workbox.navigationPreload.isSupported()) {
-  workbox.navigationPreload.enable();
-}
-
-self.addEventListener('fetch', (event) => {
-  if (event.request.mode === 'navigate') {
-    event.respondWith((async () => {
-      try {
-        const preloadResp = await event.preloadResponse;
-
-        if (preloadResp) {
-          return preloadResp;
-        }
-
-        const networkResp = await fetch(event.request);
-        return networkResp;
-      } catch (error) {
-
-        const cache = await caches.open(CACHE);
-        const cachedResp = await cache.match(offlineFallbackPage);
-        return cachedResp;
+    .button {
+      min-width: 300px;
+      min-height: 60px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 22px;
+      text-transform: uppercase;
+      letter-spacing: 1.3px;
+      font-weight: 700;
+      color: #313133;
+      background: #4FD1C5;
+    background: linear-gradient(90deg, rgba(129,230,217,1) 0%, rgba(79,209,197,1) 100%);
+      border: none;
+      border-radius: 1000px;
+      box-shadow: 12px 12px 24px rgba(79,209,197,.64);
+      transition: all 0.3s ease-in-out 0s;
+      cursor: pointer;
+      outline: none;
+      position: relative;
+      padding: 10px;
       }
-    })());
-  }
-});
-	</script>
+
+    button::before {
+    content: '';
+      border-radius: 1000px;
+      min-width: calc(300px + 12px);
+      min-height: calc(60px + 12px);
+      border: 6px solid #00FFCB;
+      box-shadow: 0 0 60px rgba(0,255,203,.64);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: all .3s ease-in-out 0s;
+    }
+
+    .button:hover, .button:focus {
+      color: #313133;
+      transform: translateY(-6px);
+    }
+
+    button:hover::before, button:focus::before {
+      opacity: 1;
+    }
+
+    button::after {
+      content: '';
+      width: 30px; height: 30px;
+      border-radius: 100%;
+      border: 6px solid #00FFCB;
+      position: absolute;
+      z-index: -1;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: ring 1.5s infinite;
+    }
+
+    button:hover::after, button:focus::after {
+      animation: none;
+      display: none;
+    }
+
+    @keyframes ring {
+      0% {
+        width: 30px;
+        height: 30px;
+        opacity: 1;
+      }
+      100% {
+        width: 300px;
+        height: 300px;
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
-
 <body>
-   <h1>No Bairro Online</h1>
-    
-    
-<div id="map"></div>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="servicos.html">Serviços</a></li>
+        <li><a href="contato.html">Contato</a></li>
+      </ul>
+    </nav>
+  </header>
 
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+  <main>
+    <section id="home">
+      <h1>Bem-vindo à No Bairro Online</h1>
+      <p>Oferecemos soluções inovadoras para o seu negócio.</p>
+    </section>
+  </main>
+<div class="wrap">
+  <a href="https://chat.whatsapp.com/JQLfc4JzNuOFESeEZTseRY">
+    <button class="button">Grupo Whatsapp</button>
+  </a>
+</div>
 
-<script type="text/javascript">
-let mapOptions = {
-    center:[-5.7902, -35.2253],
-    zoom:12
-}
-let map = new L.map('map' , mapOptions);
-
-let layer = new L.TileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
-
-map.addLayer(layer);
-
-let locations = [
-{"id":"1","title":"Grupo Alecrim","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/01_mkfbmq.jpg","url":"https://t.me/bairroalecrim","lat":"-5.798","long":"-35.2187"},
-{"id":"2","title":"Grupo Areia Preta","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/02_ja2nrc.jpg","url":"https://t.me/BairroAreiaPreta","lat":"-5.7876","long":"-35.1902"},
-{"id":"3","title":"Grupo Barro Vermelho","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/03_xpfgwu.jpg","url":"https://t.me/BairroBarroVermelho","lat":"-5.7978","long":"-35.2093"},
-{"id":"4","title":"Grupo Bom Pastor","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/04_p2fxvr.jpg","url":"https://t.me/BairroBomPastor","lat":"-5.8088","long":"-35.2451"},
-{"id":"5","title":"Grupo Candelária","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/05_ilp0pv.jpg","url":"https://t.me/BairroCandelaria","lat":"-5.8447","long":"-35.2211"},
-{"id":"6","title":"Grupo Capim Macio","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/06_sck6sn.jpg","url":"https://t.me/BairroCapimMacio","lat":"-5.857","long":"-35.1995"},
-{"id":"7","title":"Grupo Cidade Alta","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/07_eqoebc.jpg","url":"https://t.me/BairroCidadeAlta","lat":"-5.7863","long":"-35.2093"},
-{"id":"8","title":"Grupo Cidade da Esperança","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/08_jehlfi.jpg","url":"https://t.me/BairroCidadeDaEsperanca","lat":"-5.8258","long":"-35.2353"},
-{"id":"9","title":"Grupo Cidade Nova","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/09_o5vrs3.jpg","url":"https://t.me/BairroCidadeNova2","lat":"-5.839","long":"-35.2381"},
-{"id":"10","title":"Grupo Dix-Sept Rosado","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/10_dmsyyu.jpg","url":"https://t.me/BairroDixSeptRosado","lat":"-5.8047","long":"-35.2283"},
-{"id":"11","title":"Grupo Felipe Camarão","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/11_gzvkhl.jpg","url":"https://t.me/BairroFelipeCamarao","lat":"-5.8246","long":"-35.2555"},
-{"id":"12","title":"Grupo Guarapes","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/12_lf5rjr.jpg","url":"https://t.me/BairroGuarapes","lat":"-5.8354","long":"-35.268"},
-{"id":"13","title":"Grupo Igapó","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/13_ahssyk.jpg","url":"https://t.me/BairroIgapo","lat":"-5.7693","long":"-35.2626"},
-{"id":"14","title":"Grupo Lagoa Azul","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/14_q4yxoj.jpg","url":"https://t.me/BairroLagoaAzul","lat":"-5.7239","long":"-35.2592"},
-{"id":"15","title":"Grupo Lagoa Nova","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/15_zhjxuz.jpg","url":"https://t.me/BairroLagoaNova","lat":"-5.8226","long":"-35.2125"},
-{"id":"16","title":"Grupo Lagoa Seca","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/16_dk03ye.jpg","url":"https://t.me/BairroLagoaSeca","lat":"-5.80682","long":"-35.21048"},
-{"id":"17","title":"Grupo Mãe Luiza","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/17_jvippy.jpg","url":"https://t.me/BairroMaeLuiza","lat":"-5.7946","long":"-35.1866"},
-{"id":"18","title":"Grupo Néopolis","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/18_sf1irw.jpg","url":"https://t.me/BairroNeopolis2","lat":"-5.8674","long":"-35.2079"},
-{"id":"19","title":"Grupo Nordeste","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/19_fqck01.jpg","url":"https://t.me/BairroNordeste","lat":"-5.7935","long":"-35.2438"},
-{"id":"20","title":"Grupo Nossa Senhora da Apresentação","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/20_nrfj1u.jpg","url":"https://t.me/BairroNossaSenhoraDaApresentacao","lat":"-5.7457","long":"-35.2774"},
-{"id":"21","title":"Grupo Nossa Senhora de Nazaré","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/21_dcobxj.jpg","url":"https://t.me/BairroNossaSenhoraDeNazare","lat":"-5.8174","long":"-35.2315"},
-{"id":"22","title":"Grupo Nova Descoberta","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/22_u7vbwm.jpg","url":"https://t.me/BairroNovaDescoberta","lat":"-5.8268","long":"-35.1987"},
-{"id":"23","title":"Grupo Pajuçara","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/23_nc86k5.jpg","url":"https://t.me/BairroPajucara","lat":"-5.737","long":"-35.2347"},
-{"id":"24","title":"Grupo Petrópolis","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/24_xyja6g.jpg","url":"https://t.me/BairroPetropoles","lat":"-5.7844","long":"-35.1985"},
-{"id":"25","title":"Grupo Pitimbu","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/25_waobum.jpg","url":"https://t.me/BairroPitimbu","lat":"-5.8621","long":"-35.2336"},
-{"id":"26","title":"Grupo Planalto","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/26_vyvvpp.jpg","url":"https://t.me/BairroPlanalto","lat":"-5.8524","long":"-35.2584"},
-{"id":"27","title":"Grupo Ponta Negra","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/27_gifngc.jpg","url":"https://t.me/BairroPontaNegra","lat":"-5.874","long":"-35.1714"},
-{"id":"28","title":"Grupo Potengi","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/28_yojcvz.jpg","url":"https://t.me/BairroPotengi","lat":"-5.7517","long":"-35.2492"},
-{"id":"29","title":"Grupo Praia do Meio","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/29_kgtuvz.jpg","url":"https://t.me/BairroPraiaDoMeio","lat":"-5.779","long":"-35.1951"},
-{"id":"30","title":"Grupo Quintas","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/30_qw6xlp.jpg","url":"https://t.me/BairroQuintas","lat":"-5.7976","long":"-35.2314"},
-{"id":"31","title":"Grupo Redinha","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/31_ax1dsv.jpg","url":"https://t.me/BairroRedinha","lat":"-5.75053","long":"-35.20257"},
-{"id":"32","title":"Grupo Ribeira","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/32_wuqgvz.jpg","url":"https://t.me/BairroRibeira","lat":"-5.7761","long":"-35.206"},
-{"id":"33","title":"Grupo Rocas","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/33_czqayq.jpg","url":"https://t.me/BairroRocas","lat":"-5.775","long":"-35.1984"},
-{"id":"34","title":"Grupo Santos Reis","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/34_ptmckg.jpg","url":"https://t.me/BairroSantosReis","lat":"-5.7615","long":"-35.2007"},
-{"id":"35","title":"Grupo Tirol","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/35_awjiuw.jpg","url":"https://t.me/BairroTirol","lat":"-5.8033","long":"-35.2003"},
-{"id":"36","title":"Grupo Salinas","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/36_cyjuys.jpg","url":"https://t.me/+CZYXw-TH1Mg5MmUx","lat":"-5.7747","long":"-35.2296"},
-{"id":"37","title":"Grupo Jardim Progresso","src":"https://res.cloudinary.com/db4i3tch0/image/upload/v1646913293/BaixadosW/37_uv48hw.jpg","url":"https://t.me/+fXIfFio3qIEzNGJh","lat":"-5.7369","long":"-35.278"}
-]
-
-let popupOption = {
-	"closeButton" : false
-}
-
-locations.forEach(element => {
-	let item = new L.Marker([element.lat, element.long]).addTo(map).on("mouseover",event =>{
-		console.log("passou ");
-		event.target.bindPopup('<div class="card">	<img src="'+element.src+'" width="80" height="80" alt="'+element.title+'">	<h3>"'+element.title+'"</h3></div>', popupOption).openPopup();
-	})
-	.on("mouseout", event =>{
-		event.target.closePopup();
-	})
-	.on("click", event => {
-		window.open(element.url);
-	})	
-});
-	
-
-</script>
-    
-    
-<!-- Inicia codigo Contador -->
-<div align="center"><img src='https://megacontador.com.br/img-Z4OR3UkKuduWWm08-57.gif' border='0' alt='Contador de visitas'></div>
-<!-- Fim do codigo Contador -->
-	
-	<script src="index.js" ></script>
+  <footer>
+    <p>&copy; 2024 No Bairro Online. Todos os direitos reservados.</p>
+  </footer>
 </body>
-
 </html>
