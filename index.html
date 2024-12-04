@@ -109,6 +109,7 @@
       }
     }
   </style>
+  <!-- =========================== -->
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=AW-16802811912">
   </script>
@@ -119,6 +120,31 @@
   
     gtag('config', 'AW-16802811912');
   </script>
+  <!-- =========================== -->
+  <!-- // carregamento da página -->
+  <!-- Event snippet for Visualização de página conversion page -->
+  <script>
+    gtag('event', 'conversion', {'send_to': 'AW-16802811912/RfKOCL7WjvEZEIigmsw-'});
+  </script>  
+  <!-- =========================== -->
+  <!-- // clique -->  
+  <!-- Event snippet for Visualização de página conversion page
+  In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
+  <script>
+  function gtag_report_conversion(url) {
+    var callback = function () {
+      if (typeof(url) != 'undefined') {
+        window.location = url;
+      }
+    };
+    gtag('event', 'conversion', {
+        'send_to': 'AW-16802811912/RfKOCL7WjvEZEIigmsw-',
+        'event_callback': callback
+    });
+    return false;
+  }
+  </script>
+  <!-- =========================== -->
 </head>
 <body>
   <header>
